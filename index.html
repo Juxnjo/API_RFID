@@ -1,37 +1,85 @@
 <html>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="./_js/csr.js"></script>
-        <link rel="stylesheet" href="./_css/csr.css"/>
-    </head>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="./_js/csr.js"></script>
+    <link rel="stylesheet" href="./_css/csr.css" />
+    <link rel="shortcut icon" href="./img/icon.png" />
+    <title>Control RFID</title>
+  </head>
 
-    <body onLoad="initForm();">
-        <div class="header"><div class="csr_header_logo"><a href="https://www.clearstreamrfid.com" target="_blank"><img src="./img/csr_logo.png"></a></div><h1 class="csr_header">View Active Tags</h1></div>
-
-        <div class="toolbar">
-            <div style="display:inline-block;">Host/Port: <input type="text" id="txtHost" value="http://localhost:4405"/></div>
-            <div style="display:inline-block;white-space:nowrap;">Reader: 
-                <div class="reader_dropdown"><select id="cmbReaderID"></select> <a class="refreshbutton" onClick="refreshReaderList();"><img src="./img/refresh.png"></a></div>
-            </div>
-            
-            <div style="display:inline-block;">
-                <div style="display:inline-block;"><input class="toolbarbutton critical" type="button" value="Start Device" onclick="startReader();startBufferTimer();" /></div>
-                <div style="display:inline-block;"><input class="toolbarbutton critical" type="button" value="Stop Device" onclick="stopReader();stopBufferTimer();" /></div>
-                
-                <!--<div style="display:inline-block;"><input class="toolbarbutton" type="button" id="btnLive" value="Start" onclick="toggleBufferTimer();" /></div>-->
-                <!--<div style="display:inline-block;"><input class="toolbarbutton"  type="button" value="Get Buffer" onclick="viewtags();" /></div>-->
-                <!--<div style="display:inline-block;"><input class="toolbarbutton"  type="button" value="Post Tags" onclick="posttags();" /></div>-->
-                <div style="display:inline-block;"><input class="toolbarbutton"  type="button" value="Clear Tags" onclick="cleargrid();" /></div>
-                <!--<div style="display:inline-block;"><input class="toolbarbutton"  type="button" id="btnPause" value="Pause Buffer" onclick="pause(false);" /></div>-->
-                <!--<div style="display:inline-block;"><input class="toolbarbutton"  type="button" id="btnActivate" value="Resume Buffer" onclick="pause(true);" /></div>-->
-            </div>
+  <body onLoad="initForm();">
+    <div class="header">
+      <div class="csr_header_logo">
+        <div class="logo-container">
+            <img src="./img/socodaLogo.png" />
         </div>
-        
-        <div id="buffer" class="tagbuffersblock"> </div>
+        <div class="logo-container">
+            <img src="./img/Logo color_adn_1.png" />
+        </div>
+      </div>
+      
 
-        <div id="readerstatus" style="display:none;"></div>
-        <div id="result" class="result" ></div>
-        <div class="footertext"><p>&copy; Copyright Portable Technology Solutions</p></div>
-    </body>
+        
+    
+      <h1 class="csr_header">View Active Tags</h1>
+    </div>
+
+    <div class="toolbar">
+      <div style="display: inline-block">
+        Host/Port:
+        <input type="text" id="txtHost" value="http://localhost:4405" />
+      </div>
+      <div style="display: inline-block; white-space: nowrap">
+        Reader:
+        <div class="reader_dropdown">
+          <select id="cmbReaderID"></select>
+          <a class="refreshbutton" onClick="refreshReaderList();"
+            ><img src="./img/refresh.png"
+          /></a>
+        </div>
+      </div>
+
+      <div style="display: inline-block">
+        <div style="display: inline-block">
+          <input
+            class="toolbarbutton critical"
+            type="button"
+            value="Start Device"
+            onclick="startReader();startBufferTimer();"
+          />
+        </div>
+        <div style="display: inline-block">
+          <input
+            class="toolbarbutton critical"
+            type="button"
+            value="Stop Device"
+            onclick="stopReader();stopBufferTimer();"
+          />
+        </div>
+
+        <!--<div style="display:inline-block;"><input class="toolbarbutton" type="button" id="btnLive" value="Start" onclick="toggleBufferTimer();" /></div>-->
+        <!--<div style="display:inline-block;"><input class="toolbarbutton"  type="button" value="Get Buffer" onclick="viewtags();" /></div>-->
+        <!--<div style="display:inline-block;"><input class="toolbarbutton"  type="button" value="Post Tags" onclick="posttags();" /></div>-->
+        <div style="display: inline-block">
+          <input
+            class="toolbarbutton"
+            type="button"
+            value="Clear Tags"
+            onclick="cleargrid();"
+          />
+        </div>
+        <!--<div style="display:inline-block;"><input class="toolbarbutton"  type="button" id="btnPause" value="Pause Buffer" onclick="pause(false);" /></div>-->
+        <!--<div style="display:inline-block;"><input class="toolbarbutton"  type="button" id="btnActivate" value="Resume Buffer" onclick="pause(true);" /></div>-->
+      </div>
+    </div>
+
+    <div id="buffer" class="tagbuffersblock"></div>
+
+    <div id="readerstatus" style="display: none"></div>
+    <div id="result" class="result"></div>
+    <div class="footertext">
+      <p>&copy; Copyright Portable Technology Solutions</p>
+    </div>
+  </body>
 </html>

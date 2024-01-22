@@ -4,7 +4,7 @@ Copyright 2018 Portable Technology Solutions
 Styling for web portal to control readers and view scanned tags.
 */
 *{box-sizing: border-box;}
-body {font-family: arial; padding:10px;background-color:#1b4659;color:#333;}
+body {font-family: arial; padding:10px;background-color:#202020;color:#333;}
 div.tagbuffersblock { background-color:#e6e6e6; border:1px solid black;}
 div.dataheader {display: table-header-group;white-space:nowrap;background-color:#dc6802;color:#282e30;max-height:15px;width:100%;font-weight:600;}
 div.datarow {display: table-row;white-space:nowrap;background-color:white;max-height:15px;width:100%;}
@@ -23,7 +23,34 @@ div.toolbar { margin:0px; background-color:#4c5e65; color:white; padding:5px; te
 div.result { margin:0px; background-color:#e6e6e6; padding:15px; border:0px solid black;}
 
 h1.csr_header{display:inline-block; font-size:14pt;}
-div.csr_header_logo{float:left;display:inline-block;background-color:#4c5e65;}
+.csr_header_logo {
+    background-color: #4c5e65;
+    width: 100%;
+    display: flex; 
+}
+
+.logo-container {
+    width: 30%; 
+    text-align: center;
+    }
+
+.logo-container:first-child {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-container:last-child {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+}
+
+.logo-container img {
+    width: 50%; 
+}
+
 
 input {font-size:12pt;}
 select{font-size:12pt;}
