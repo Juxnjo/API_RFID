@@ -514,8 +514,8 @@ function actualizar() {
     };
 
     fetch("http://localhost:4405/device/0/properties", requestOptions)
-        .then(response => response.text())
-        .then(result => console.log(result))
+        .then(response => response.json())
+        .then(result => console.log("new order", result))
         .catch(error => console.log('error', error));
 }
 
