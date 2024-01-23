@@ -1,4 +1,4 @@
-/* //=============================================================================
+//=============================================================================
 // ClearStream RFID
 //
 // Copyright (c) Portable Technology Solutions, LLC.  All rights reserved.
@@ -427,4 +427,8 @@ function initForm() {
 
     //document.getElementById('cmbReaderID').value = sParam_ReaderId;
     startBufferTimer();
-} */
+} 
+
+function actualizar(){
+    console.log("prueba")
+}
