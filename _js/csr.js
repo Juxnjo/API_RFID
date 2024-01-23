@@ -14,56 +14,56 @@ var g_aReaderList = null;
 var g_bIsLive = false;
 var POLL_INTERVAL = 1000;
 var url_string = window.location.href;
-var url = new URL( url_string );
-var sParam_ReaderId = url.searchParams.get( "id" );
+var url = new URL(url_string);
+var sParam_ReaderId = url.searchParams.get("id");
 
-function processReaderBuffer ( pReaderBuffer )
-{
-    var sReaderDomId = pReaderBuffer.deviceid.replace( /:/g, "" );
+function processReaderBuffer(pReaderBuffer) {
 
-    var tb1 = document.getElementById( sReaderDomId );
-    if ( tb1 == null )
-    {
+    
+    var sReaderDomId = pReaderBuffer.deviceid.replace(/:/g, "");
 
-        var pWrapper = $( "<div class='bufferwrapper'/>" );
+    var tb1 = document.getElementById(sReaderDomId);
+    if (tb1 == null) {
 
-        var pReaderInfo = $( "<div class='readerstats'/>" ).attr( "id", 'stats' + sReaderDomId );
-        pWrapper.append( pReaderInfo );
+        var pWrapper = $("<div class='bufferwrapper'/>");
 
-        tbl = $( "<div class='buffertable' />" ).attr( "id", sReaderDomId );
+        var pReaderInfo = $("<div class='readerstats'/>").attr("id", 'stats' + sReaderDomId);
+        pWrapper.append(pReaderInfo);
 
-        $( "#buffer" ).append( pWrapper );
-        pWrapper.append( tbl );
+        tbl = $("<div class='buffertable' />").attr("id", sReaderDomId);
 
-        pDivRowHeader = $( "<div class=\"dataheader\" />" ).attr( "id", sReaderDomId + 'header' );
+        $("#buffer").append(pWrapper);
+        pWrapper.append(tbl);
 
-        $( '#' + sReaderDomId ).append( pDivRowHeader );
-        initHeaderRow( pDivRowHeader );
+        pDivRowHeader = $("<div class=\"dataheader\" />").attr("id", sReaderDomId + 'header');
 
-        var pvalidRow = $( "#" + sReaderDomId + 'header' );
+        $('#' + sReaderDomId).append(pDivRowHeader);
+        initHeaderRow(pDivRowHeader);
 
-        pvalidRow.data( 'valid', true );
+        var pvalidRow = $("#" + sReaderDomId + 'header');
+
+        pvalidRow.data('valid', true);
 
         // Add the body, to which the rows will be appended.
-        pDivTableBody = $( "<div class=\"databody\" />" ).attr( "id", sReaderDomId + 'body' );
-        $( '#' + sReaderDomId ).append( pDivTableBody );
+        pDivTableBody = $("<div class=\"databody\" />").attr("id", sReaderDomId + 'body');
+        $('#' + sReaderDomId).append(pDivTableBody);
     }
 
     var nTagCount = 0;
-    if ( pReaderBuffer.buffer )
+    if (pReaderBuffer.buffer)
         nTagCount = pReaderBuffer.buffer.length;
 
-    tb1 = document.getElementById( sReaderDomId + 'body' );
-    var pReaderTable = document.getElementById( 'stats' + sReaderDomId );
+    tb1 = document.getElementById(sReaderDomId + 'body');
+    var pReaderTable = document.getElementById('stats' + sReaderDomId);
+
 
     pReaderTable.innerHTML = `<div style="width:100%;">
-                                <div class="readerstatrow"><div class="readerstatscell-label">Reader Name:</div><div class="readerstatscell">${ pReaderBuffer.name }</div></div>
-                                <div class="readerstatrow"><div class="readerstatscell-label">Device ID:</div><div class="readerstatscell">${ pReaderBuffer.deviceid }</div></div>
-                                <div class="readerstatrow"><div class="readerstatscell-label">Started:</div><div class="readerstatscell">${ pReaderBuffer.started }</div></div>
-                                <div class="readerstatrow"><div class="readerstatscell-label">Inventory:</div><div class="readerstatscell">${ pReaderBuffer.inventory }</div></div>
-                                <div class="readerstatrow"><div class="readerstatscell-label">Active:</div><div class="readerstatscell">${ pReaderBuffer.bufferactive }</div></div>
-                                <div class="readercountcell" id="countdiv">Tag Count: <strong>${ nTagCount }</strong></div>
-                              </div>`;
+                                <div class="readerstatrow">
+                                    <div class="readerstatscell">${pReaderBuffer.started ? 'Encendido' : 'Apagado'}</div>
+                                    <div class="semaforo" style="background-color: ${pReaderBuffer.started ? 'green' : 'red'};"></div>
+                                </div>
+                                <div class="readercountcell" id="countdiv">Tag Count: <strong>${nTagCount}</strong></div>
+                            </div>`;
 
     // First flag as invalid.
     /*for (var i = 0; i < tb1.childNodes.length; i++){
@@ -71,30 +71,26 @@ function processReaderBuffer ( pReaderBuffer )
         $(pRowToInvalidate).data('valid', false);
     }*/
     // Add/Update rows, flag as valid if they exist.
-    if ( pReaderBuffer.buffer )
-    {
-        for ( var j = 0; j < nTagCount; j++ )
-        {
-            var pRow = pReaderBuffer.buffer[ j ];
+    if (pReaderBuffer.buffer) {
+        for (var j = 0; j < nTagCount; j++) {
+            var pRow = pReaderBuffer.buffer[j];
             var sMainID = pRow.EPC;
-            if ( !sMainID || sMainID == '' )
-            {
+            if (!sMainID || sMainID == '') {
                 continue;
             }
-            var pDivRow = $( "#" + sMainID + sReaderDomId );
-            if ( pDivRow.length > 0 )
-            {
-                setRowToView( pRow, pDivRow, sReaderDomId );
-                pDivRow.data( 'valid', true );
+            var pDivRow = $("#" + sMainID + sReaderDomId);
+            if (pDivRow.length > 0) {
+                setRowToView(pRow, pDivRow, sReaderDomId);
+                pDivRow.data('valid', true);
                 continue;
             }
 
-            pDivRow = $( "<div class=\"datarow\" />" ).attr( "id", sMainID + sReaderDomId );
+            pDivRow = $("<div class=\"datarow\" />").attr("id", sMainID + sReaderDomId);
 
-            $( '#' + sReaderDomId + 'body' ).append( pDivRow );
+            $('#' + sReaderDomId + 'body').append(pDivRow);
 
-            setRowToView( pRow, pDivRow, sReaderDomId );
-            pDivRow.data( 'valid', true );
+            setRowToView(pRow, pDivRow, sReaderDomId);
+            pDivRow.data('valid', true);
         }
     }
     // Remove invalid rows.
@@ -104,45 +100,41 @@ function processReaderBuffer ( pReaderBuffer )
            $(pRowToCheck).remove();
     }*/
 }
-function setRowToView ( pRow, pDivRow, sReaderDomId )
-{
+function setRowToView(pRow, pDivRow, sReaderDomId) {
 
     var sMainID = pRow.EPC;
-    if ( !sMainID || sMainID == '' )
+    if (!sMainID || sMainID == '')
         sMainID = pRow.MAC;
 
     var sRowId = sMainID + sReaderDomId + 'row';
-    if ( document.getElementById( sRowId ) )
-    {
-        document.getElementById( sRowId ).innerText = sMainID;
-        if ( document.getElementById( sRowId + 'datetime' ) )
-            document.getElementById( sRowId + 'datetime' ).innerText = pRow.DateTime;
+    if (document.getElementById(sRowId)) {
+        document.getElementById(sRowId).innerText = sMainID;
+        if (document.getElementById(sRowId + 'datetime'))
+            document.getElementById(sRowId + 'datetime').innerText = pRow.DateTime;
         /* if (document.getElementById(sRowId+'ant'))
             document.getElementById(sRowId+'ant').innerText = pRow.Antenna; */
-        if ( document.getElementById( sRowId + 'rn' ) )
-            document.getElementById( sRowId + 'rn' ).innerText = pRow.ReaderName;
+        if (document.getElementById(sRowId + 'rn'))
+            document.getElementById(sRowId + 'rn').innerText = pRow.ReaderName;
         /* if (document.getElementById(sRowId+'rssi'))
             document.getElementById(sRowId+'rssi').innerText = pRow.PeakRSSI; */
-        if ( document.getElementById( sRowId + 'startevent' ) )
-            document.getElementById( sRowId + 'startevent' ).innerText = pRow.Pedido;
+        if (document.getElementById(sRowId + 'startevent'))
+            document.getElementById(sRowId + 'startevent').innerText = pRow.Pedido;
     }
-    else
-    {
+    else {
         pDivRow.empty();
 
         var td1 = "<div class=\"datacell\" id=\"" + sRowId + "\">" + sMainID + "</div>";
-        var td2 = "<div class=\"datacell\" id=\"" + sRowId + "datetime\">" + pRow[ "DateTime" ] + "</div>";
+        var td2 = "<div class=\"datacell\" id=\"" + sRowId + "datetime\">" + pRow["DateTime"] + "</div>";
         /* var td3="<div class=\"datacell\" id=\""+sRowId+"ant\">"+pRow["Antenna"]+"</div>"; */
-        var td4 = "<div class=\"datacell\" id=\"" + sRowId + "rn\">" + pRow[ "ReaderName" ] + "</div>";
+        var td4 = "<div class=\"datacell\" id=\"" + sRowId + "rn\">" + pRow["ReaderName"] + "</div>";
         /* var td5="<div class=\"datacell\" id=\""+sRowId+"rssi\">"+pRow["PeakRSSI"]+"</div>"; */
-        var td6 = "<div class=\"datacell\" id=\"" + sRowId + "startevent\">" + pRow[ "Pedido" ] + "</div>";
+        var td6 = "<div class=\"datacell\" id=\"" + sRowId + "startevent\">" + pRow["Pedido"] + "</div>";
 
-        pDivRow.append( td1 + td2 /* + td3 */ + td4 /* + td5 */ + td6 );
+        pDivRow.append(td1 + td2 /* + td3 */ + td4 /* + td5 */ + td6);
     }
 }
 //
-function initHeaderRow ( pDivRow )
-{
+function initHeaderRow(pDivRow) {
     pDivRow.empty();
 
     var td1 = "<div class=\"datacell\" >EPC</div>";
@@ -152,352 +144,306 @@ function initHeaderRow ( pDivRow )
     /*  var td5="<div class=\"datacell\" >RSSI</div>"; */
     var td6 = "<div class=\"datacell\" >Pedido</div>";
 
-    pDivRow.append( td1 + td2 /* + td3 */ + td4 /* + td5 */ + td6 );
+    pDivRow.append(td1 + td2 /* + td3 */ + td4 /* + td5 */ + td6);
 }
 //
-function getDeviceList ( callback )
-{
+function getDeviceList(callback) {
     clearStatus();
     var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function ()
-    {
-        if ( this.readyState == 4 && this.status == 200 )
-        {
-            if ( this.responseText && this.responseText.length > 0 )
-            {
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            if (this.responseText && this.responseText.length > 0) {
                 //alert(this.responseText);
-                var aList = JSON.parse( this.responseText );
+                var aList = JSON.parse(this.responseText);
 
-                if ( callback )
-                    callback( aList );
+                if (callback)
+                    callback(aList);
             }
         }
     };
     //xhttp.open("GET", getHost() + "/version", true);//"/device/status", true);
-    xhttp.open( "GET", getHost() + "/device/status", true );
-    xhttp.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
+    xhttp.open("GET", getHost() + "/device/status", true);
+    xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhttp.send();
 }
 //
-function getTagsAndStats ( callback )
-{
+function getTagsAndStats(callback) {
     clearStatus();
     var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function ()
-    {
-        if ( this.readyState == 4 && this.status == 200 )
-        {
-            if ( this.responseText && this.responseText.length > 0 )
-            {
-                document.getElementById( "readerstatus" ).innerHTML = this.responseText;
-                g_aReaderList = JSON.parse( this.responseText );
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            if (this.responseText && this.responseText.length > 0) {
+                document.getElementById("readerstatus").innerHTML = this.responseText;
+                g_aReaderList = JSON.parse(this.responseText);
 
-                for ( var h = 0; h < g_aReaderList.devices.length; h++ )
-                {
+                for (var h = 0; h < g_aReaderList.devices.length; h++) {
 
-                    var aReaderBuffer = g_aReaderList.devices[ h ];
-                    processReaderBuffer( aReaderBuffer );
+                    var aReaderBuffer = g_aReaderList.devices[h];
+                    processReaderBuffer(aReaderBuffer);
                 }
-                if ( callback )
+                if (callback)
                     callback();
             }
         }
     };
-    xhttp.open( "GET", getHost() + "/device" + getReaderIdPath() + "/buffer", true );
-    xhttp.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
+    xhttp.open("GET", getHost() + "/device" + getReaderIdPath() + "/buffer", true);
+    xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhttp.send();
 }
 //
-function getTags ( callback )
-{
+function getTags(callback) {
     clearStatus();
     var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function ()
-    {
-        if ( this.readyState == 4 && this.status == 200 )
-        {
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
 
-            if ( this.responseText && this.responseText.length > 0 )
-            {
-                console.log( this.responseText );
-                g_aReaderList = JSON.parse( this.responseText );
+            if (this.responseText && this.responseText.length > 0) {
+                console.log(this.responseText);
+                g_aReaderList = JSON.parse(this.responseText);
 
-                for ( var h = 0; h < g_aReaderList.devices.length; h++ )
-                {
-                    var aReaderBuffer = g_aReaderList.devices[ h ];
-                    processReaderBuffer( aReaderBuffer );
+                for (var h = 0; h < g_aReaderList.devices.length; h++) {
+                    var aReaderBuffer = g_aReaderList.devices[h];
+                    processReaderBuffer(aReaderBuffer);
                 }
-                if ( callback )
+                if (callback)
                     callback();
             }
         }
-        else if ( this.readyState == 4 && this.status == 500 )
-        {
-            if ( callback )
+        else if (this.readyState == 4 && this.status == 500) {
+            if (callback)
                 callback();
         }
     };
-    xhttp.open( "GET", getHost() + "/device" + getReaderIdPath(), true );
-    xhttp.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
+    xhttp.open("GET", getHost() + "/device" + getReaderIdPath(), true);
+    xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhttp.send();
 }
 //
-function viewtags ()
-{
+function viewtags() {
     getTags();
 }
 //
-function setBufferActiveButton ( pReader )
-{
-    if ( pReader.bufferactive == true )
-        document.getElementById( 'btnPause' ).value = 'Pause Buffer';
+function setBufferActiveButton(pReader) {
+    if (pReader.bufferactive == true)
+        document.getElementById('btnPause').value = 'Pause Buffer';
     else
-        document.getElementById( 'btnPause' ).value = 'Resume Buffer';
+        document.getElementById('btnPause').value = 'Resume Buffer';
 }
 //
-function startBufferTimer ()
-{
-    if ( g_bIsLive == true )
+function startBufferTimer() {
+    if (g_bIsLive == true)
         return;
 
     g_bIsLive = true;
     pollServer();
 }
 //
-function stopBufferTimer ()
-{
+function stopBufferTimer() {
     g_bIsLive = false;
 }
 //
-function pollServer ()
-{
-    if ( g_bIsLive )
-    {
-        window.setTimeout( function ()
-        {
-            getTags( pollServer );
-        }, POLL_INTERVAL );
+function pollServer() {
+    if (g_bIsLive) {
+        window.setTimeout(function () {
+            getTags(pollServer);
+        }, POLL_INTERVAL);
     }
 }
 //
-function posttags ()
-{
+function posttags() {
     clearStatus();
     var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function ()
-    {
+    xhttp.onreadystatechange = function () {
 
-        if ( this.readyState == 4 && ( this.status == 200 || this.status == 400 || this.status == 404 ) )
-        {
-            document.getElementById( "result" ).innerHTML = this.responseText;
+        if (this.readyState == 4 && (this.status == 200 || this.status == 400 || this.status == 404)) {
+            document.getElementById("result").innerHTML = this.responseText;
             //getTags();
         }
     };
     var sFilter = '';
-    if ( document.getElementById( 'txtSalesOrder' ).value != '' )
-    {
-        sFilter = '{"filters":[{"SalesOrder":"' + document.getElementById( 'txtSalesOrder' ).value + '"}]}'
+    if (document.getElementById('txtSalesOrder').value != '') {
+        sFilter = '{"filters":[{"SalesOrder":"' + document.getElementById('txtSalesOrder').value + '"}]}'
     }
-    else
-    {
-        console.log( document.getElementById( 'reader' ).value );
-        console.log( document.getElementsByName( 'reader' ).value );
+    else {
+        console.log(document.getElementById('reader').value);
+        console.log(document.getElementsByName('reader').value);
     }
-    xhttp.open( "PUT", getHost() + "/device" + getReaderIdPath() + "/buffer/flush", true );
-    xhttp.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
-    xhttp.send( sFilter );
+    xhttp.open("PUT", getHost() + "/device" + getReaderIdPath() + "/buffer/flush", true);
+    xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhttp.send(sFilter);
 }
 //
-function cleartags ()
-{
+function cleartags() {
     clearStatus();
     var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function ()
-    {
-        if ( this.readyState == 4 && ( this.status == 200 || this.status == 400 || this.status == 404 ) )
-        {
-            document.getElementById( "result" ).innerHTML = this.responseText;
-            console.log( 'TAG LIST CLEARED' );
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && (this.status == 200 || this.status == 400 || this.status == 404)) {
+            document.getElementById("result").innerHTML = this.responseText;
+            console.log('TAG LIST CLEARED');
             getTags();
         }
     };
-    xhttp.open( "DELETE", getHost() + "/device" + getReaderIdPath() + "/buffer", true );
-    xhttp.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
+    xhttp.open("DELETE", getHost() + "/device" + getReaderIdPath() + "/buffer", true);
+    xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhttp.send();
 }
 //
-function cleargrid ()
-{
+function cleargrid() {
     // Remove rows.
     var bRestartTimer = g_bIsLive;
-    if ( bRestartTimer == true )
+    if (bRestartTimer == true)
         stopBufferTimer();
 
-    var aGrids = document.getElementsByClassName( 'buffertable' );
+    var aGrids = document.getElementsByClassName('buffertable');
 
-    for ( var j = 0; j < aGrids.length; j++ )
-    {
-        var sReaderDomId = aGrids[ j ].id;
+    for (var j = 0; j < aGrids.length; j++) {
+        var sReaderDomId = aGrids[j].id;
 
-        tb1 = document.getElementById( sReaderDomId + 'body' );
-        if ( !tb1 )
+        tb1 = document.getElementById(sReaderDomId + 'body');
+        if (!tb1)
             continue;
-        for ( var i = tb1.childNodes.length - 1; i >= 0; i-- )
-        {
-            var pRowToCheck = tb1.childNodes[ i ];
-            $( pRowToCheck ).remove();
+        for (var i = tb1.childNodes.length - 1; i >= 0; i--) {
+            var pRowToCheck = tb1.childNodes[i];
+            $(pRowToCheck).remove();
         }
     }
 
-    document.getElementById( 'countdiv' ).innerHTML = 'Tag Count: <strong>0</strong>';
+    document.getElementById('countdiv').innerHTML = 'Tag Count: <strong>0</strong>';
 
-    if ( bRestartTimer == true )
+    if (bRestartTimer == true)
         startBufferTimer();
 }
 //
-function pause ( bSetActive )
-{
+function pause(bSetActive) {
     clearStatus();
     var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function ()
-    {
-        if ( this.readyState == 4 && ( this.status == 200 || this.status == 400 || this.status == 404 ) )
-        {
-            document.getElementById( "result" ).innerHTML = this.responseText;
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && (this.status == 200 || this.status == 400 || this.status == 404)) {
+            document.getElementById("result").innerHTML = this.responseText;
         }
     };
-    xhttp.open( "POST", getHost() + "/device" + getReaderIdPath() + "/buffer/active", true );
-    xhttp.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
-    xhttp.send( '{"isactive":' + bSetActive + '}' );
+    xhttp.open("POST", getHost() + "/device" + getReaderIdPath() + "/buffer/active", true);
+    xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhttp.send('{"isactive":' + bSetActive + '}');
 }
 //
-function getReaderStatus ()
-{
+function getReaderStatus() {
     clearStatus();
     var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function ()
-    {
-        if ( this.readyState == 4 && ( this.status == 200 || this.status == 400 || this.status == 404 ) )
-        {
-            document.getElementById( "readerstatus" ).innerHTML = this.responseText;
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && (this.status == 200 || this.status == 400 || this.status == 404)) {
+            document.getElementById("readerstatus").innerHTML = this.responseText;
         }
     };
-    xhttp.open( "GET", getHost() + "/device" + getReaderIdPath(), true );
-    xhttp.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
+    xhttp.open("GET", getHost() + "/device" + getReaderIdPath(), true);
+    xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhttp.send();
 }
 //
-function startReader ()
-{
+function startReader() {
     clearStatus();
     var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function ()
-    {
+    xhttp.onreadystatechange = function () {
 
-        if ( this.readyState == 4 && ( this.status == 200 || this.status == 400 || this.status == 404 ) )
-        {
-            document.getElementById( "readerstatus" ).innerHTML = this.responseText;
+        if (this.readyState == 4 && (this.status == 200 || this.status == 400 || this.status == 404)) {
+            document.getElementById("readerstatus").innerHTML = this.responseText;
         }
     };
-    xhttp.open( "POST", getHost() + "/device" + getReaderIdPath(), true );
-    xhttp.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
-    xhttp.send( '{"devices":[{"start":true, "index":"' + document.getElementById( 'cmbReaderID' ).value + '"}]}' );
+    xhttp.open("POST", getHost() + "/device" + getReaderIdPath(), true);
+    xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhttp.send('{"devices":[{"start":true, "index":"' + document.getElementById('cmbReaderID').value + '"}]}');
 }
 //
-function stopReader ()
-{
+function stopReader() {
     clearStatus();
     var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function ()
-    {
+    xhttp.onreadystatechange = function () {
 
-        if ( this.readyState == 4 && ( this.status == 200 || this.status == 400 || this.status == 404 ) )
-        {
-            document.getElementById( "readerstatus" ).innerHTML = this.responseText;
+        if (this.readyState == 4 && (this.status == 200 || this.status == 400 || this.status == 404)) {
+            document.getElementById("readerstatus").innerHTML = this.responseText;
         }
     };
-    xhttp.open( "POST", getHost() + "/device" + getReaderIdPath(), true );
-    xhttp.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
+    xhttp.open("POST", getHost() + "/device" + getReaderIdPath(), true);
+    xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
-    xhttp.send( '{"devices":[{"start":false, "index":"' + document.getElementById( 'cmbReaderID' ).value + '"}]}' );
+    xhttp.send('{"devices":[{"start":false, "index":"' + document.getElementById('cmbReaderID').value + '"}]}');
 }
 //
-function getHost ()
-{
+function getHost() {
     var sHost = '';
-    if ( document.getElementById( 'txtHost' ).value != '' )
-        sHost = document.getElementById( 'txtHost' ).value;
+    if (document.getElementById('txtHost').value != '')
+        sHost = document.getElementById('txtHost').value;
     return sHost;
 }
 //
-function getReaderIdPath ()
-{
+function getReaderIdPath() {
     var sReaderId = '';
-    if ( document.getElementById( 'cmbReaderID' ).value != '' )
-        sReaderId = '/' + document.getElementById( 'cmbReaderID' ).value;
+    if (document.getElementById('cmbReaderID').value != '')
+        sReaderId = '/' + document.getElementById('cmbReaderID').value;
     return sReaderId;
 }
 //
-function getReaderIdPath_ForTagWrite ()
-{
+function getReaderIdPath_ForTagWrite() {
     var sReaderId = '';
-    if ( document.getElementById( 'txtWriteReader' ).value != '' )
-        sReaderId = '/' + document.getElementById( 'txtWriteReader' ).value;
+    if (document.getElementById('txtWriteReader').value != '')
+        sReaderId = '/' + document.getElementById('txtWriteReader').value;
     return sReaderId;
 }
 //
-function clearStatus ()
-{
-    document.getElementById( 'result' ).innerHTML = '';
+function clearStatus() {
+    document.getElementById('result').innerHTML = '';
 }
 //
-function refreshReaderList ()
-{
-    function setReaderList ( list )
-    {
-        var pCombo = document.getElementById( 'cmbReaderID' );
+function refreshReaderList() {
+    function setReaderList(list) {
+        var pCombo = document.getElementById('cmbReaderID');
         pCombo.options.length = 0;
         var length = pCombo.options.length;
-        for ( i = 0; i < length; i++ )
-        {
-            pCombo.options[ i ] = null;
+        for (i = 0; i < length; i++) {
+            pCombo.options[i] = null;
         }
 
-        for ( var h = 0; h < list.devices.length; h++ )
-        {
-            var pReader = list.devices[ h ];
+        for (var h = 0; h < list.devices.length; h++) {
+            var pReader = list.devices[h];
 
-            var option = document.createElement( "option" );
+            var option = document.createElement("option");
             option.text = pReader.name;
             option.value = pReader.index;
 
-            if ( h == sParam_ReaderId )
+            if (h == sParam_ReaderId)
                 option.selected = true;
 
-            pCombo.add( option );
+            pCombo.add(option);
         }
     }
 
-    getDeviceList( setReaderList );
+    getDeviceList(setReaderList);
 }
 //
-function initForm ()
-{
+function initForm() {
 
     refreshReaderList();
 
-    if ( !sParam_ReaderId || sParam_ReaderId.length <= 0 )
+    if (!sParam_ReaderId || sParam_ReaderId.length <= 0)
         return;
 
     //document.getElementById('cmbReaderID').value = sParam_ReaderId;
     startBufferTimer();
+
+    processReaderBuffer({ started: false });
 }
 
 function actualizar() {
+
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
     var customPropValue = document.getElementById('txtSalesOrder').value;
+
+    if (customPropValue.trim() === "") {
+        alert("Por favor, ingrese el numero de pedido.");
+        return;
+    }
 
     var raw = JSON.stringify([
         {
@@ -515,7 +461,8 @@ function actualizar() {
 
     fetch("http://localhost:4405/device/0/properties", requestOptions)
         .then(response => response.json())
-        .then(result => console.log("new order", result))
+        .then(result => console.log("Nueva orden", result))
         .catch(error => console.log('error', error));
+    alert("Pedido actualizado exitosamente!")
 }
 

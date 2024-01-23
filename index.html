@@ -19,16 +19,16 @@
         </div>
       </div>
 
-      <h1 class="csr_header">View Active Tags</h1>
+      <h1 class="csr_header">Control RFID</h1>
     </div>
 
     <div class="toolbar">
-      <div style="display: inline-block">
-        Host/Port:
-        <input type="text" id="txtHost" value="http://localhost:4405" />
+      <div style="display: inline-block" >
+        <!-- Host/Port: -->
+        <input type="text" id="txtHost" value="http://localhost:4405" hidden/>
       </div>
       <div style="display: inline-block; white-space: nowrap">
-        Reader:
+        Lector:
         <div class="reader_dropdown">
           <select id="cmbReaderID"></select>
           <a class="refreshbutton" onClick="refreshReaderList();"
@@ -42,24 +42,23 @@
           <input
             class="toolbarbutton critical"
             type="button"
-            value="Start Device"
+            value="Encender"
             onclick="startReader();startBufferTimer();"
           />
         </div>
-        <div style="display: inline-block">
-          <input type="text" placeholder="# Pedido" id="txtSalesOrder" />
-          <input
-            class="toolbarbutton"
-            type="button"
-            value="Actualizar"
-            onclick="actualizar();"
-          />
-        </div>
+        <form style="display: inline-block">
+          <input  type="text" placeholder="# Pedido" id="txtSalesOrder" required/>
+          <button class="toolbarbutton"
+          type="button"
+          value="Actualizar"
+          onclick="actualizar();">Actualizar </button>
+          
+        </form>
         <div style="display: inline-block">
           <input
             class="toolbarbutton critical"
             type="button"
-            value="Stop Device"
+            value="Apagar"
             onclick="stopReader();stopBufferTimer();"
           />
         </div>
@@ -70,7 +69,7 @@
           <input
             class="toolbarbutton"
             type="button"
-            value="Clear Tags"
+            value="Limpiar Etiquetas"
             onclick="cleargrid();"
           />
         </div>
@@ -79,7 +78,7 @@
       </div>
     </div>
 
-    <div id="buffer" class="tagbuffersblock"></div>
+    <div id="buffer" class="tagbuffersblock">    </div>
 
     <div id="readerstatus" style="display: none"></div>
     <div id="result" class="result"></div>
