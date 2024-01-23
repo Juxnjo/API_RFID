@@ -9,7 +9,7 @@ Styling for web portal to control readers and view scanned tags.
 body {
   font-family: arial;
   padding: 10px;
-  background-color: #202020;
+  background-color: #0073CF;
   color: #333;
 }
 div.tagbuffersblock {
@@ -19,8 +19,8 @@ div.tagbuffersblock {
 div.dataheader {
   display: table-header-group;
   white-space: nowrap;
-  background-color: #dc6802;
-  color: #282e30;
+  background-color: #D8A31A;
+  color: white;
   max-height: 15px;
   width: 100%;
   font-weight: 600;
@@ -62,7 +62,7 @@ div.buffertable {
   display: table;
   overflow-y: scroll;
   border: 0px solid black;
-  background-color: #b4cad5;
+  background-color: #8DA6DB;
   width: 100%;
   margin: 0px;
   height: 150px;
@@ -71,29 +71,29 @@ div.buffertable {
 
 div.readerstats {
   padding: 10px;
-  background-color: #c7c7c7;
+  background-color: #E2F0FF;
   font-size: -1;
 }
 
 div.header {
   margin: 0px;
-  background-color: #badbe5;
+  background-color: #E2F0FF;
   padding: 0px 0px 2px 0px;
   text-align: center;
 }
 div.header h1 {
-  color: #464646;
+  color: #202020;
 }
 div.toolbar {
   margin: 0px;
-  background-color: #4c5e65;
+  background-color: #8DA6DB;
   color: white;
   padding: 5px;
   text-align: center;
 }
 div.result {
   margin: 0px;
-  background-color: #e6e6e6;
+  background-color: #E2F0FF;
   padding: 15px;
   border: 0px solid black;
 }
@@ -103,7 +103,7 @@ h1.csr_header {
   font-size: 14pt;
 }
 .csr_header_logo {
-  background-color: #4c5e65;
+  background-color: #8DA6DB;
   width: 100%;
   display: flex;
 }
@@ -149,9 +149,10 @@ a.refreshbutton:hover {
 }
 
 .toolbarbutton {
-  background-color: #1ea7c6;
+  background-color: #0073CF;
   border: none;
   color: white;
+  font-weight: 600;
   padding: 7px 16px;
   margin: 5px;
   text-align: center;
@@ -168,7 +169,7 @@ a.refreshbutton:hover {
   -webkit-appearance: none;
 }
 .critical {
-  background-color: #dc6802;
+  background-color: #D8A31A;
   border-radius: 0;
   -webkit-appearance: none;
 }

@@ -419,7 +419,7 @@ function refreshReaderList() {
 
     getDeviceList(setReaderList);
 }
-//
+
 function initForm() {
 
     refreshReaderList();
@@ -438,9 +438,9 @@ function actualizar() {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
-    var customPropValue = document.getElementById('txtSalesOrder').value;
+    var customPropValue = document.getElementById('txtSalesOrder').value.trim()
 
-    if (customPropValue.trim() === "") {
+    if (customPropValue === "") {
         alert("Por favor, ingrese el numero de pedido.");
         return;
     }
@@ -463,6 +463,31 @@ function actualizar() {
         .then(response => response.json())
         .then(result => console.log("Nueva orden", result))
         .catch(error => console.log('error', error));
+
+    mostrarBotones();
     alert("Pedido actualizado exitosamente!")
+}
+
+function mostrarBotones() {
+    // Muestra los botones
+    document.getElementById('btnEncender').style.display = 'inline-block';
+    document.getElementById('btnApagar').style.display = 'inline-block';
+    document.getElementById('btnLimpiar').style.display = 'inline-block';
+}
+
+function initForm() {
+    // Oculta los botones al cargar la página
+    ocultarBotones();
+
+    refreshReaderList();
+
+    // ...
+}
+
+function ocultarBotones() {
+    // Oculta los botones
+    document.getElementById('btnEncender').style.display = 'none';
+    document.getElementById('btnApagar').style.display = 'none';
+    document.getElementById('btnLimpiar').style.display = 'none';
 }
 

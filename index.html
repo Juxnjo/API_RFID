@@ -23,9 +23,9 @@
     </div>
 
     <div class="toolbar">
-      <div style="display: inline-block" >
+      <div style="display: inline-block">
         <!-- Host/Port: -->
-        <input type="text" id="txtHost" value="http://localhost:4405" hidden/>
+        <input type="text" id="txtHost" value="http://localhost:4405" hidden />
       </div>
       <div style="display: inline-block; white-space: nowrap">
         Lector:
@@ -40,6 +40,7 @@
       <div style="display: inline-block">
         <div style="display: inline-block">
           <input
+            id="btnEncender"
             class="toolbarbutton critical"
             type="button"
             value="Encender"
@@ -47,38 +48,43 @@
           />
         </div>
         <form style="display: inline-block">
-          <input  type="text" placeholder="# Pedido" id="txtSalesOrder" required/>
-          <button class="toolbarbutton"
-          type="button"
-          value="Actualizar"
-          onclick="actualizar();">Actualizar </button>
-          
+          <input
+            type="text"
+            placeholder="# Pedido"
+            id="txtSalesOrder"
+            required
+          />
+          <button
+            class="toolbarbutton"
+            type="button"
+            value="Actualizar"
+            onclick="actualizar();"
+          >
+            Actualizar
+          </button>
         </form>
         <div style="display: inline-block">
           <input
+            id="btnApagar"
             class="toolbarbutton critical"
             type="button"
             value="Apagar"
             onclick="stopReader();stopBufferTimer();"
           />
         </div>
-
-        <!--<div style="display:inline-block;"><input class="toolbarbutton" type="button" id="btnLive" value="Start" onclick="toggleBufferTimer();" /></div>-->
-        <!--<div style="display:inline-block;"><input class="toolbarbutton"  type="button" value="Get Buffer" onclick="viewtags();" /></div>-->
         <div style="display: inline-block">
           <input
+            id="btnLimpiar"
             class="toolbarbutton"
             type="button"
             value="Limpiar Etiquetas"
             onclick="cleargrid();"
           />
         </div>
-        <!--<div style="display:inline-block;"><input class="toolbarbutton"  type="button" id="btnPause" value="Pause Buffer" onclick="pause(false);" /></div>-->
-        <!--<div style="display:inline-block;"><input class="toolbarbutton"  type="button" id="btnActivate" value="Resume Buffer" onclick="pause(true);" /></div>-->
       </div>
     </div>
 
-    <div id="buffer" class="tagbuffersblock">    </div>
+    <div id="buffer" class="tagbuffersblock"></div>
 
     <div id="readerstatus" style="display: none"></div>
     <div id="result" class="result"></div>
