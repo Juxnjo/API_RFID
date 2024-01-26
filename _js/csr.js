@@ -111,26 +111,28 @@ function setRowToView(pRow, pDivRow, sReaderDomId) {
         document.getElementById(sRowId).innerText = sMainID;
         if (document.getElementById(sRowId + 'datetime'))
             document.getElementById(sRowId + 'datetime').innerText = pRow.DateTime;
-        /* if (document.getElementById(sRowId+'ant'))
-            document.getElementById(sRowId+'ant').innerText = pRow.Antenna; */
-        if (document.getElementById(sRowId + 'rn'))
-            document.getElementById(sRowId + 'rn').innerText = pRow.ReaderName;
+        if (document.getElementById(sRowId+'ant'))
+            document.getElementById(sRowId+'ant').innerText = pRow.Antenna;
+        /* if (document.getElementById(sRowId + 'rn'))
+            document.getElementById(sRowId + 'rn').innerText = pRow.ReaderName; */
         /* if (document.getElementById(sRowId+'rssi'))
             document.getElementById(sRowId+'rssi').innerText = pRow.PeakRSSI; */
-        if (document.getElementById(sRowId + 'startevent'))
-            document.getElementById(sRowId + 'startevent').innerText = pRow.Pedido;
+        if (document.getElementById(sRowId + 'pedido'))
+            document.getElementById(sRowId + 'pedido').innerText = pRow.Pedido;
+        
     }
     else {
         pDivRow.empty();
 
         var td1 = "<div class=\"datacell\" id=\"" + sRowId + "\">" + sMainID + "</div>";
         var td2 = "<div class=\"datacell\" id=\"" + sRowId + "datetime\">" + pRow["DateTime"] + "</div>";
-        /* var td3="<div class=\"datacell\" id=\""+sRowId+"ant\">"+pRow["Antenna"]+"</div>"; */
-        var td4 = "<div class=\"datacell\" id=\"" + sRowId + "rn\">" + pRow["ReaderName"] + "</div>";
+        var td3="<div class=\"datacell\" id=\""+sRowId+"ant\">"+pRow["Antenna"]+"</div>";
+        /* var td4 = "<div class=\"datacell\" id=\"" + sRowId + "rn\">" + pRow["ReaderName"] + "</div>"; */
         /* var td5="<div class=\"datacell\" id=\""+sRowId+"rssi\">"+pRow["PeakRSSI"]+"</div>"; */
-        var td6 = "<div class=\"datacell\" id=\"" + sRowId + "startevent\">" + pRow["Pedido"] + "</div>";
+        var td6 = "<div class=\"datacell\" id=\"" + sRowId + "pedido\">" + pRow["Pedido"] + "</div>";
+        
 
-        pDivRow.append(td1 + td2 /* + td3 */ + td4 /* + td5 */ + td6);
+        pDivRow.append(td1 + td2 + td3  /* + td4 */ /* + td5 */ + td6);
     }
 }
 //
@@ -139,12 +141,12 @@ function initHeaderRow(pDivRow) {
 
     var td1 = "<div class=\"datacell\" >EPC</div>";
     var td2 = "<div class=\"datacell\" >Date Time</div>";
-    /* var td3="<div class=\"datacell\" >Antenna</div>"; */
-    var td4 = "<div class=\"datacell\" >Reader</div>";
+    var td3="<div class=\"datacell\" >Puerta</div>"; 
+    /* var td4 = "<div class=\"datacell\" >Reader</div>"; */
     /*  var td5="<div class=\"datacell\" >RSSI</div>"; */
     var td6 = "<div class=\"datacell\" >Pedido</div>";
 
-    pDivRow.append(td1 + td2 /* + td3 */ + td4 /* + td5 */ + td6);
+    pDivRow.append(td1 + td2  + td3 /*  + td4 */ /* + td5 */ + td6);
 }
 //
 function getDeviceList(callback) {
